@@ -13,8 +13,8 @@ defmodule QueryxTest do
   describe "Queryx" do
     test "build_query/2 returns query" do
       query =
-        Queryx.build_query(%{"order_by" => {:asc, :id}}, TestPost)
-        |> Queryx.build_query(%{"limit" => 2})
+        Queryx.build_query(%{order_by: {:asc, :id}}, TestPost)
+        |> Queryx.build_query(%{limit:  2})
 
       IO.inspect(query)
       assert 1 == 1

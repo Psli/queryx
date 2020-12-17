@@ -14,45 +14,45 @@ defmodule Queryx do
     from(p in module)
   end
 
-  defp compose_query({"order_by", value}, query) do
+  defp compose_query({:order_by, value}, query) do
     query
     |> order_by(^value)
   end
 
-  defp compose_query({"limit", n}, query) do
+  defp compose_query({:limit, n}, query) do
     query
     |> limit(^n)
   end
 
-  defp compose_query({"preload", value}, query) when is_list(value) do
+  defp compose_query({:preload, value}, query) when is_list(value) do
     value = Enum.map(value, fn val -> String.to_atom(val) end)
 
     query
     |> preload(^value)
   end
 
-  defp compose_query({"preload", value}, query) do
+  defp compose_query({:preload, value}, query) do
     value = String.to_atom(value)
 
     query
     |> preload(^value)
   end
 
-  defp compose_query({key, {"eq", value}}, query) do
+  defp compose_query({key, {:eq, value}}, query) do
     key = String.to_atom(key)
 
     query
     |> where([p], field(p, ^key) == ^value)
   end
 
-  defp compose_query({key, {"not_eq", nil}}, query) do
+  defp compose_query({key, {:not_eq, nil}}, query) do
     key = String.to_atom(key)
 
     query
     |> where([p], not is_nil(field(p, ^key)))
   end
 
-  defp compose_query({key, {"not_eq", value}}, query) do
+  defp compose_query({key, {:not_eq, value}}, query) do
     key = String.to_atom(key)
 
     query
@@ -60,7 +60,7 @@ defmodule Queryx do
   end
 
   # Greater than
-  defp compose_query({key, {"gt", value}}, query) do
+  defp compose_query({key, {:gt, value}}, query) do
     key = String.to_atom(key)
 
     query
@@ -68,7 +68,7 @@ defmodule Queryx do
   end
 
   # Less than
-  defp compose_query({key, {"lt", value}}, query) do
+  defp compose_query({key, {:lt, value}}, query) do
     key = String.to_atom(key)
 
     query
@@ -76,7 +76,7 @@ defmodule Queryx do
   end
 
   # Greater than or equal
-  defp compose_query({key, {"gteq", value}}, query) do
+  defp compose_query({key, {:gteq, value}}, query) do
     key = String.to_atom(key)
 
     query
@@ -84,21 +84,21 @@ defmodule Queryx do
   end
 
   # Less than or equal
-  defp compose_query({key, {"lteq", value}}, query) do
+  defp compose_query({key, {:lteq, value}}, query) do
     key = String.to_atom(key)
 
     query
     |> where([p], field(p, ^key) <= ^value)
   end
 
-  defp compose_query({key, {"in", value}}, query) do
+  defp compose_query({key, {:in, value}}, query) do
     key = String.to_atom(key)
 
     query
     |> where([p], field(p, ^key) in ^value)
   end
 
-  defp compose_query({key, {"between", begin_value, end_value}}, query) do
+  defp compose_query({key, {:between, begin_value, end_value}}, query) do
     key = String.to_atom(key)
 
     query
