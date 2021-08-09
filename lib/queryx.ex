@@ -1,7 +1,11 @@
 defmodule Queryx do
   import Ecto.Query, warn: false
 
-  def build_query(query, criteria) when is_map(criteria) do
+  def build_query(query, criteria) when is_struct(query, Ecto.Query) and is_map(criteria) do
+    Enum.reduce(criteria, query, &compose_query/2)
+  end
+
+  def build_query(criteria, query) when is_struct(query, Ecto.Query) do
     Enum.reduce(criteria, query, &compose_query/2)
   end
 
