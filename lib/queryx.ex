@@ -48,6 +48,11 @@ defmodule Queryx do
     |> where([p], field(p, ^key) != ^value)
   end
 
+  defp compose_query({key, {:not_in, value}}, query) do
+    query
+    |> where([p], field(p, ^key) not in ^value)
+  end
+
   # Greater than
   defp compose_query({key, {:gt, value}}, query) do
     query
